@@ -79,9 +79,24 @@ router.put('/:id', (req, res) => {
     res.status(500).json(err);
   });
 });
-
+ // delete a category by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+ Category.destroy({
+   where: {
+     id: req.params.id
+   }
+ })
+ .then(dbCatData => {
+   if(!dbCatData){
+     res.status(404).json({message: 'Invalid Category ID'});
+      return;
+    }
+    res.json(dbCatData);
+ })
+ .catch(err => {
+   console.log(err);
+   res.status(500).json(err);
+ })
 });
 
 module.exports = router;
