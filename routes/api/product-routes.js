@@ -139,9 +139,24 @@ router.put('/:id', (req, res) => {
       res.status(400).json(err);
     });
 });
-
+// delete one product by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+  product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbPrdData => {
+    if(!dbPrdData){
+      res.status(404).json({message: 'Invalid product ID'});
+      return;
+    }
+    res.json(dbPrdData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
 
 module.exports = router;
